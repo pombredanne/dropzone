@@ -7,9 +7,12 @@ module.exports = (grunt) ->
     stylus:
       options:
         compress: false
-      default:
+      basic:
         files: [
           "downloads/css/basic.css": "downloads/css/stylus/basic.styl"
+        ]
+      dropzone:
+        files: [
           "downloads/css/dropzone.css": "downloads/css/stylus/dropzone.styl"
         ]
 
@@ -21,14 +24,18 @@ module.exports = (grunt) ->
         files:
           "test/test.js": "test/*.coffee"
 
-    component_build:
-      app:
-        output: "build/"
-        name: "build"
-        config: "component.json"
-        styles: false
-        scripts: true
+    componentbuild:
+      options:
         standalone: "Dropzone"
+
+      app:
+        # output: "build/"
+        name: "build"
+        src: "."
+        dest: "./build"
+        # config: "component.json"
+        # styles: false
+        # scripts: true
 
     copy:
       component:
@@ -87,6 +94,6 @@ module.exports = (grunt) ->
 
   grunt.registerTask "css", "Compile the stylus files to css", [ "stylus" ]
 
-  grunt.registerTask "js", "Compile coffeescript and create all download files", [ "coffee", "component_build", "copy", "concat" ]
+  grunt.registerTask "js", "Compile coffeescript", [ "coffee", "componentbuild", "copy", "concat" ]
 
-  grunt.registerTask "downloads", [ "js", "css", "uglify" ]
+  grunt.registerTask "downloads", "Compile all stylus and coffeescript files and generate the download files", [ "js", "css", "uglify" ]
